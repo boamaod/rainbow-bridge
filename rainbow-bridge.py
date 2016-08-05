@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # names of channels to relay (according to libpurple naming standards)
+# TODO: maybe support more than two
 
 bridge_me = [
     "#botwar",
@@ -29,6 +30,9 @@ chat = {}
 from pydbus import SessionBus
 from gi.repository import GObject
 
+def debug_print(target_conv, send_me):
+    print target_conv, ">>>", "\"" + send_me + "\"" + " [" + send_me.encode('hex_codec') + "]"
+    
 def chat_msg_cb(account, sender, message, conv, flags):
 
     print sender + " said: " + message, "///", conv, flags, account, message.encode('hex_codec')
@@ -44,10 +48,8 @@ def chat_msg_cb(account, sender, message, conv, flags):
         	send_me = send_me.split("<e_m ts=\"")[0] + " (ed)"
         
         target_conv = next(iter(set(chat)-set([conv])))
-        
         purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
-        
-        print target_conv, ">>>", "\"" + send_me + "\"" + " [" + send_me.encode('hex_codec') + "]"
+        debug_print(target_conv, send_me)
 
 def chat_joined_cb(conv, name, new_arrival, flags):
     print name + " joined:", conv, new_arrival, flags
@@ -55,9 +57,11 @@ def chat_joined_cb(conv, name, new_arrival, flags):
     if conv in chat.keys():
     
         send_me = name + "++"
-    
-        purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(next(iter(set(chat)-set([conv])))), send_me)
 
+        target_conv = next(iter(set(chat)-set([conv])))
+        purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
+        debug_print(target_conv, send_me)
+        
 def chat_left_cb(conv, name, reason):
     print name + " left:", conv, "because: " + reason
 
@@ -67,13 +71,17 @@ def chat_left_cb(conv, name, reason):
         
         if len(reason) > 0:
             send_me += " (" + reason + ")"
-    
-        purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(next(iter(set(chat)-set([conv])))), send_me)
+
+        target_conv = next(iter(set(chat)-set([conv])))
+        purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
+        debug_print(target_conv, send_me)
+
+# start main proc
 
 bus = SessionBus()
 purple = bus.get("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
 
-print "--- rainbow-bridge for libpurple/finch/pidgin ---"
+print ">>> Rainbow 🌈 Bridge for Libpurple/Finch/Pidgin <<<"
 
 for conv in purple.PurpleGetConversations():
     if purple.PurpleConversationGetName(conv) in bridge_me:
