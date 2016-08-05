@@ -11,4 +11,8 @@ Requirements:
 
 See [test.sh](test.sh) for an example.
 
+Alternatives:
+
+* https://github.com/bill-auger/bridgin-php
+
 [1] https://github.com/boamaod/skype2irc/issues/7
