@@ -18,7 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # names of channels to relay (according to libpurple naming standards)
-# TODO: maybe support more than two
 
 bridge_me = [
     "#botwar",
@@ -30,51 +29,58 @@ chat = {}
 from pydbus import SessionBus
 from gi.repository import GObject
 
+class Protocol(object):
+    IRC = "IRC"
+    SKYPE = "Skype (HTTP)"
+
 def debug_print(target_conv, send_me):
     print target_conv, ">>>", "\"" + send_me + "\"" + " [" + send_me.encode('hex_codec') + "]"
     
 def chat_msg_cb(account, sender, message, conv, flags):
-
     print sender + " said: " + message, "///", conv, flags, account, message.encode('hex_codec')
     
-    if conv in chat.keys() and chat[conv] != sender:
-    
-        if message[:4] == "/me ":
-            send_me = "/me " + sender + " " + message[4:]
-        else:
-            send_me = "<" + sender + "> " + message
-        	
-        if "<e_m ts=\"" in send_me:
-        	send_me = send_me.split("<e_m ts=\"")[0] + " (ed)"
+    if conv in chat and chat[conv]["nick"] != sender:
+        for target_conv in iter(set(chat)-set([conv])):
+            
+            if message[:4] == "/me " or message[:5] == "\01/me ":
+                if chat[target_conv]["protocol"] == Protocol.IRC:
+                    send_me = "\01ACTION " + sender + " " + message.split("/me ")[1] + "\01"
+                else:
+                    send_me = "/me " + sender + " " + message.split("/me ")[1]
+            else:
+                if chat[target_conv]["protocol"] == Protocol.SKYPE:
+                    send_me = "&lt;" + sender + "&gt; " + message
+                else:
+                    send_me = "<" + sender + "> " + message
+            
+            if chat[target_conv]["protocol"] != Protocol.SKYPE and "<e_m ts=\"" in send_me:
+                send_me = send_me.split("<e_m ts=\"")[0] + " (ed)"
+
+            purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
+            debug_print(target_conv, send_me)
+
+def chat_joined_cb(conv, nick, new_arrival, flags):
+    print nick + " joined:", conv, new_arrival, flags
+
+    if conv in chat:
+        send_me = nick + "++"
+
+        for target_conv in iter(set(chat)-set([conv])):
+            purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
+            debug_print(target_conv, send_me)
         
-        target_conv = next(iter(set(chat)-set([conv])))
-        purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
-        debug_print(target_conv, send_me)
+def chat_left_cb(conv, nick, reason):
+    print nick + " left:", conv, "because: " + reason
 
-def chat_joined_cb(conv, name, new_arrival, flags):
-    print name + " joined:", conv, new_arrival, flags
+    if conv in chat:
+        send_me = nick + "--"
 
-    if conv in chat.keys():
-    
-        send_me = name + "++"
-
-        target_conv = next(iter(set(chat)-set([conv])))
-        purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
-        debug_print(target_conv, send_me)
-        
-def chat_left_cb(conv, name, reason):
-    print name + " left:", conv, "because: " + reason
-
-    if conv in chat.keys():
-    
-        send_me = name + "--"
-        
         if len(reason) > 0:
             send_me += " (" + reason + ")"
 
-        target_conv = next(iter(set(chat)-set([conv])))
-        purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
-        debug_print(target_conv, send_me)
+        for target_conv in iter(set(chat)-set([conv])):
+            purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
+            debug_print(target_conv, send_me)
 
 # start main proc
 
@@ -85,11 +91,13 @@ print ">>> Rainbow 🌈 Bridge for Libpurple/Finch/Pidgin <<<"
 
 for conv in purple.PurpleGetConversations():
     if purple.PurpleConversationGetName(conv) in bridge_me:
-    	#print purple.PurpleConversationGetName(conv)
-    	chat[conv] = purple.PurpleConvChatGetNick(purple.PurpleConversationGetChatData(conv))
+    	chat[conv] = {
+            "nick": purple.PurpleConvChatGetNick(purple.PurpleConversationGetChatData(conv)),
+            "protocol": purple.PurpleAccountGetProtocolName(purple.PurpleConversationGetAccount(conv))
+            }
 
 for conv in chat.keys():
-	print "<->", chat[conv], "on", purple.PurpleConversationGetName(conv), conv
+	print "<->", chat[conv]["nick"], "on", purple.PurpleConversationGetName(conv), chat[conv]["protocol"], conv
 
 purple.ReceivedChatMsg.connect(chat_msg_cb)
 purple.ChatBuddyJoined.connect(chat_joined_cb)
@@ -98,4 +106,3 @@ purple.ChatBuddyLeft.connect(chat_left_cb)
 print "((( listening )))"
 
 GObject.MainLoop().run()
-

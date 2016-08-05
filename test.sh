@@ -21,4 +21,4 @@ cd rainbow-bridge
 dbus-launch screen -S rainbow -dmLU -t 0 finch
 sleep 30
 screen -S rainbow -X screen -t 1
-screen -S rainbow -p1 -X stuff $'./rainbow-bridge.py\n'
+screen -S rainbow -p 1 -X stuff $'./rainbow-bridge.py\n'
