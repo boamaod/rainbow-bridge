@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Rainbow 🌈 Bridge: simple bridge for Libpurple chats via Pidgin/Finch
+# Rainbow 🌈 Bridge: simple relay bot for Libpurple via Pidgin/Finch
 # Copyright (C) 2016  Märt Põder <tramm@p6drad-teel.net>
 #
 # This program is free software: you can redistribute it and/or modify
