@@ -11,4 +11,4 @@ Requirements:
 
 See [test.sh](test.sh) for an example.
 
-[1] https://github.com/boamaod/skype2irc
+[1] https://github.com/boamaod/skype2irc/issues/7
