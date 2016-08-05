@@ -97,7 +97,7 @@ for conv in purple.PurpleGetConversations():
             }
 
 for conv in chat.keys():
-	print "<->", chat[conv]["nick"], "on", purple.PurpleConversationGetName(conv), chat[conv]["protocol"], conv
+	print "<->", chat[conv]["nick"], "on", purple.PurpleConversationGetName(conv), "(" + str(conv) + ")", "using", chat[conv]["protocol"]
 
 purple.ReceivedChatMsg.connect(chat_msg_cb)
 purple.ChatBuddyJoined.connect(chat_joined_cb)

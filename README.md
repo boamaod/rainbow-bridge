@@ -2,7 +2,7 @@
 
 Simple relay bot for Libpurple chats using D-Bus with Pidgin/Finch
 
-> Orginally created as replacement for maliciously deprecated P2P chatrooms on Skype [1], but should work for most of the protocols supported by Libpurple, that is AIM, ICQ, Google Talk, Jabber/XMPP, MSN Messenger, Yahoo!, Bonjour, Gadu-Gadu, IRC, Novell GroupWise Messenger, Lotus Sametime, SILC, SIMPLE, MXit, Zephyr [2] and even more with plugins [3]. You can run it on console, if you use Finch instead of Pidgin to run your Libpurple instance for the chatrooms you want to bridge.
+> Orginally created as a replacement for maliciously deprecated P2P chatrooms on Skype [1], but should work for most of the protocols supported by Libpurple, that is AIM, ICQ, Google Talk, Jabber/XMPP, MSN Messenger, Yahoo!, Bonjour, Gadu-Gadu, IRC, Novell GroupWise Messenger, Lotus Sametime, SILC, SIMPLE, MXit, Zephyr [2] and even more with plugins [3]. You can start it on console, if you use Finch instead of Pidgin to run your Libpurple instance for the chatrooms you want to bridge.
 
 Requirements:
 
