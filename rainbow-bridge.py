@@ -34,10 +34,10 @@ class Protocol(object):
     SKYPE = "Skype (HTTP)"
 
 def debug_print(target_conv, send_me):
-    print target_conv, ">>>", "\"" + send_me + "\"" + " [" + send_me.encode('hex_codec') + "]"
+    print target_conv, ">>>", "\"" + send_me + "\"" #+ " [" + send_me.encode('hex_codec') + "]"
     
 def chat_msg_cb(account, sender, message, conv, flags):
-    print sender + " said: " + message, "///", conv, flags, account, message.encode('hex_codec')
+    print sender + " said: " + message, "///", conv, flags, account #, message.encode('hex_codec')
     
     if conv in chat and chat[conv]["nick"] != sender:
         for target_conv in iter(set(chat)-set([conv])):
