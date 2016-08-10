@@ -17,17 +17,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# names of channels to relay (according to libpurple naming standards)
-
-bridge_me = [
-    "#botwar",
-    "19:bf984b822da9402c98aa8021323a817f@thread.skype"
-    ]
-
-chat = {}
+import sys
 
 from pydbus import SessionBus
 from gi.repository import GObject
+
+chat = {}
+
+if len(sys.argv) >= 2: # path to config (same as below) on command prompt
+
+    execfile(sys.argv[1])
+
+else: # names of channels to relay (using libpurple naming standards)
+
+	bridge_me = [
+		"#botwar",
+		"19:bf984b822da9402c98aa8021323a817f@thread.skype"
+		]
 
 class Protocol(object):
     IRC = "IRC"
