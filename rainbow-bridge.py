@@ -36,6 +36,7 @@ else: # names of channels to relay (using libpurple naming standards)
 		]
 
 class Protocol(object):
+    FACEBOOK = "Facebook"
     IRC = "IRC"
     SKYPE = "Skype (HTTP)"
 
@@ -54,7 +55,7 @@ def chat_msg_cb(account, sender, message, conv, flags):
                 else:
                     send_me = "/me " + sender + " " + message.split("/me ")[1]
             else:
-                if chat[target_conv]["protocol"] == Protocol.SKYPE:
+                if chat[target_conv]["protocol"] in (Protocol.SKYPE, Protocol.FACEBOOK):
                     send_me = "&lt;" + sender + "&gt; " + message
                 else:
                     send_me = "<" + sender + "> " + message
