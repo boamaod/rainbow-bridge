@@ -32,7 +32,7 @@ else: # names of channels to relay (using libpurple naming standards)
 
 	bridge_me = [
 		"#botwar",
-		"19:bf984b822da9402c98aa8021323a817f@thread.skype"
+		"19:bf984b822da9402c98aa8021323a817f@thread.skype",
 		]
 
 class Protocol(object):
@@ -47,6 +47,9 @@ def chat_msg_cb(account, sender, message, conv, flags):
     print sender + " said: " + message, "///", conv, flags, account #, message.encode('hex_codec')
     
     if conv in chat and chat[conv]["nick"] != sender:
+        if chat[conv]["protocol"] == Protocol.FACEBOOK:
+            sender = purple.PurpleBuddyGetAlias(purple.PurpleFindBuddy(account, sender))
+
         for target_conv in iter(set(chat)-set([conv])):
             
             if message[:4] == "/me " or message[:5] == "\01/me ":
