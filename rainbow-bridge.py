@@ -28,10 +28,16 @@ if len(sys.argv) >= 2: # path to config (same as below) on command prompt
 
     execfile(sys.argv[1])
 
-else: # names of channels to relay (using libpurple naming standards)
+else:
 
+	# names of channels to relay (using libpurple naming standards)
 	bridge_me = [
 		"#botwar",
+		"19:bf984b822da9402c98aa8021323a817f@thread.skype",
+		]
+
+	# users joining/leaving won't be announced for these channels
+	dont_announce = [
 		"19:bf984b822da9402c98aa8021323a817f@thread.skype",
 		]
 
@@ -72,6 +78,12 @@ def chat_msg_cb(account, sender, message, conv, flags):
 def chat_joined_cb(conv, nick, new_arrival, flags):
     print nick + " joined:", conv, new_arrival, flags
 
+    if conv not in chat:
+		return
+
+    if not chat[conv]["announce"]:
+		return
+
     if conv in chat:
         send_me = nick + "++"
 
@@ -81,6 +93,12 @@ def chat_joined_cb(conv, nick, new_arrival, flags):
         
 def chat_left_cb(conv, nick, reason):
     print nick + " left:", conv, "because: " + reason
+
+    if conv not in chat:
+		return
+
+    if not chat[conv]["announce"]:
+		return
 
     if conv in chat:
         send_me = nick + "--"
@@ -100,10 +118,12 @@ purple = bus.get("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObje
 print ">>> Rainbow 🌈 Bridge for Libpurple/Finch/Pidgin <<<"
 
 for conv in purple.PurpleGetConversations():
-    if purple.PurpleConversationGetName(conv) in bridge_me:
+    name = purple.PurpleConversationGetName(conv)
+    if name in bridge_me:
     	chat[conv] = {
             "nick": purple.PurpleConvChatGetNick(purple.PurpleConversationGetChatData(conv)),
-            "protocol": purple.PurpleAccountGetProtocolName(purple.PurpleConversationGetAccount(conv))
+            "protocol": purple.PurpleAccountGetProtocolName(purple.PurpleConversationGetAccount(conv)),
+            "announce": name not in dont_announce,
             }
 
 for conv in chat.keys():
