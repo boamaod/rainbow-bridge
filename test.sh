@@ -1,5 +1,7 @@
 # testing on ubuntu 16.04.1
 
+# https://github.com/EionRobb/skype4pidgin/tree/master/skypeweb#building-deb-package-for-debianubuntumint
+
 sudo apt-get install libpurple-dev libjson-glib-dev cmake gcc
 git clone git://github.com/EionRobb/skype4pidgin.git
 cd skype4pidgin/skypeweb
@@ -9,6 +11,17 @@ cmake ..
 cpack
 sudo dpkg -i skypeweb-1.2.0-Linux.deb
 cd ../../..
+
+# https://github.com/dequis/purple-facebook/wiki/Building-on-*NIX
+
+wget https://github.com/dequis/purple-facebook/releases/download/66ee77378d82/purple-facebook-66ee77378d82.tar.gz
+tar xvf purple-facebook-66ee77378d82.tar.gz
+cd purple-facebook-66ee77378d82/
+./configure
+make
+sudo make install
+
+# the bridge itself
 
 sudo apt-get install screen python-pip python-gobject
 pip install pydbus
