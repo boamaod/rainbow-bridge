@@ -10,8 +10,9 @@ The directory [.purple](.purple) is copied here just for example. Presuming you 
 	$ ln -s $(pwd)/.purple ~
 	$ ./start.sh
 
-Make sure you have installed packages for `screen` and `finch`. In Debian based systems probably something like:
+Make sure you have installed relevant Python libraries and packages for `screen` and `finch`. On Debian based systems probably something like:
 
-	$ sudo apt-get install finch screen
+	$ sudo apt-get install screen finch python-pip python-gobject
+	$ pip install pydbus
 
 This bridge is meant to be a generic one to be easily modified, so have a look at [source code](../rainbow-bridge.py) and fork it any way you want to.
