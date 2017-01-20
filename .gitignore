@@ -1,2 +1,3 @@
 screenlog.*
 *.conf
+config-example/.purple/*
