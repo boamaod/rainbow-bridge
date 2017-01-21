@@ -23,7 +23,7 @@ sudo make install
 
 # the bridge itself
 
-sudo apt-get install screen python-pip python-gobject
+sudo apt-get install screen finch python-pip python-gobject
 pip install pydbus
 git clone https://github.com/boamaod/rainbow-bridge.git
 cd rainbow-bridge
