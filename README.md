@@ -16,6 +16,6 @@ Alternatives:
 
 * https://github.com/bill-auger/bridgin-php
 
-[1] https://github.com/boamaod/skype2irc/issues/7
-[2] https://www.pidgin.im/about/
+[1] https://github.com/boamaod/skype2irc/issues/7  
+[2] https://www.pidgin.im/about/  
 [3] https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols
