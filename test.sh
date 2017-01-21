@@ -1,4 +1,4 @@
-# testing on ubuntu 16.04.1
+# tested on ubuntu 16.04.1 and raspbian 8.0
 
 # https://github.com/EionRobb/skype4pidgin/tree/master/skypeweb#building-deb-package-for-debianubuntumint
 
@@ -17,6 +17,15 @@ cd ../../..
 wget https://github.com/dequis/purple-facebook/releases/download/66ee77378d82/purple-facebook-66ee77378d82.tar.gz
 tar xvf purple-facebook-66ee77378d82.tar.gz
 cd purple-facebook-66ee77378d82/
+./configure
+make
+sudo make install
+
+# https://github.com/majn/telegram-purple#building-from-source
+
+sudo apt-get install libgcrypt20-dev libpurple-dev libwebp-dev gettext
+git clone --recursive https://github.com/majn/telegram-purple
+cd telegram-purple
 ./configure
 make
 sudo make install

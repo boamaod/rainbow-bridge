@@ -34,6 +34,7 @@ else:
 	bridge_me = [
 		"#botwar",
 		"19:bf984b822da9402c98aa8021323a817f@thread.skype",
+		"@BotListChat",
 		]
 
 	# users joining/leaving won't be announced for these channels
@@ -45,6 +46,7 @@ class Protocol(object):
     FACEBOOK = "Facebook"
     IRC = "IRC"
     SKYPE = "Skype (HTTP)"
+    TELEGRAM = "Telegram"
 
 def debug_print(target_conv, send_me):
     print target_conv, ">>>", "\"" + send_me + "\"" #+ " [" + send_me.encode('hex_codec') + "]"
@@ -64,13 +66,16 @@ def chat_msg_cb(account, sender, message, conv, flags):
                 else:
                     send_me = "/me " + sender + " " + message.split("/me ")[1]
             else:
-                if chat[target_conv]["protocol"] in (Protocol.SKYPE, Protocol.FACEBOOK):
+                if chat[target_conv]["protocol"] in (Protocol.SKYPE, Protocol.FACEBOOK, Protocol.TELEGRAM):
                     send_me = "&lt;" + sender + "&gt; " + message
                 else:
                     send_me = "<" + sender + "> " + message
-            
+
             if chat[target_conv]["protocol"] != Protocol.SKYPE and "<e_m ts=\"" in send_me:
                 send_me = send_me.split("<e_m ts=\"")[0] + " (ed)"
+
+	    if chat[target_conv]["protocol"] == Protocol.TELEGRAM:
+		send_me = send_me.replace("&apos;", "'")
 
             purple.PurpleConvChatSend(purple.PurpleConversationGetChatData(target_conv), send_me)
             debug_print(target_conv, send_me)
