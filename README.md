@@ -16,10 +16,6 @@ Alternatives:
 
 * https://github.com/bill-auger/bridgin-php
 
-[1] https://github.com/boamaod/skype2irc/issues/7  
-[2] https://www.pidgin.im/about/  
-[3] https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols  
-
-And if you are one of those who think in pictures, maybe this will help you out:
-
-![Pink fluffy unicorns of Libpurple will bridge practically anything!](rainbow.png "Rainbow 🌈 Bridge with pink fluffy unicorns of Libpurple")
+[1] https://github.com/boamaod/skype2irc/issues/7
+[2] https://www.pidgin.im/about/
+[3] https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols
