@@ -10,7 +10,7 @@ Requirements:
 * [pydbus](https://github.com/LEW21/pydbus)
 * [skype4pidgin](https://github.com/EionRobb/skype4pidgin/tree/master/skypeweb) (for original intention)
 
-See [test.sh](test.sh) for some installation instructions/ideas and use [config-example](config-example) to give it a quick test run.
+See [test.sh](test.sh) for some installation instructions/ideas and use [config-example](config-example) to give it a quick test run. Here are [some real world examples of config files](https://gist.github.com/boamaod/ff8e32634fe42138569cece82ffba6ec).
 
 Alternatives:
 
