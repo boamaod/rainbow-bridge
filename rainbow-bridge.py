@@ -23,6 +23,7 @@ from pydbus import SessionBus
 from gi.repository import GObject
 
 chat = {}
+dont_announce = []
 
 if len(sys.argv) >= 2: # path to config (same as below) on command prompt
 
